@@ -7,4 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".activities.PaymentActivity">
 
+    <TextView
+        android:id="@+id/messagingHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/amountField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter amount"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messagingHeader" />
+
+    <Button
+        android:id="@+id/sendPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Payment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amountField" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
