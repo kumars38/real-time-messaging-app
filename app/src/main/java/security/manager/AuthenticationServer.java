@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+//this is for testing the socket connections and security features only
 public class AuthenticationServer extends Thread {
     private HashMap<String, String> database;
     private String selfIp;
@@ -61,7 +62,7 @@ public class AuthenticationServer extends Thread {
     }
     @Override
     public void run() {
-//        while(true) {
+//        while(true) { the while loop is fucking up the sockets shall fix this later
         for (int port : ports) {
             try {
                 ServerSocket socket;
