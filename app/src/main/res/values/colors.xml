@@ -15,4 +15,5 @@
     <color name="log_in_bt">#1F65A4</color>
     <color name="user_profile_gradient_start">#724fdb</color>
     <color name="user_profile_gradient_end">#39237d</color>
+    <color name="user_profile_menu_text">#182693</color>
 </resources>
