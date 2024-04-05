@@ -20,6 +20,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.messagingapp.R;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -63,10 +65,24 @@ public class PaymentActivity extends AppCompatActivity {
         }
 
         // call da api
-        boolean paymentStatus = PaymentAPI.sendPayment("recipientName", amount);
+        //boolean paymentStatus = PaymentAPI.sendPayment("recipientName", amount);
+        JSONObject jsonResponse = PaymentAPI.sendPayment("recipientName", amount);
+        //parse JSON response
+
+        int paymentStatus = -1; // Default value for error
+        try {
+            if (jsonResponse != null) {
+                paymentStatus = jsonResponse.getInt("status");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
 
         // alert when payment is done
-        if (paymentStatus) {
+        if (paymentStatus==1) {
             showAlert("Payment Transaction Success");
         } else {
             showAlert("Payment Transaction Failure");
