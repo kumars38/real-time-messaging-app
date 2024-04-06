@@ -108,7 +108,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/role"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <TextView
@@ -143,7 +143,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Work Number"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <TextView
@@ -178,7 +178,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Preferred Name"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <EditText
@@ -214,7 +214,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Font Size"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <EditText
@@ -251,7 +251,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="System Color"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <Spinner
