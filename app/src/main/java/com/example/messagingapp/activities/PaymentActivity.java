@@ -26,29 +26,52 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class PaymentActivity extends AppCompatActivity {
-    ArrayList<String> dummyDatabase = new ArrayList<>(); // Dummy db  to log transactions --> pretty sure we were gonna centralize this guy tho??
+    ArrayList<String> dummyDatabase = new ArrayList<>();
+    // Dummy db  to log transactions --> pretty sure we were gonna centralize this guy tho??
     //where is the real db??? how we gonna format her???
+
+    private EditText amountField;
+    private EditText recipientNameField;
+    private EditText paymentMessageField;
+    private TextView headerTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_payment);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Intent i = getIntent();
-        String recipientName = i.getStringExtra("recipientInfo");
-        //is this a bad spot to assert lol
-        assert recipientName != null;
-        Log.d("recipientName", recipientName);
+        amountField = findViewById(R.id.amountField);
+        recipientNameField = findViewById(R.id.recipientName);
+        paymentMessageField = findViewById(R.id.paymentMessage);
+        //headerTextView = findViewById(R.id.messagingHeader);
+        PaymentAPI paymentAPI = new PaymentAPI();
+
+        Button sendPaymentButton = findViewById(R.id.sendPayment);
+        sendPaymentButton.setOnClickListener(v -> {
+            double amount;
+            amount = Double.parseDouble(amountField.getText().toString());
+            String recipientName = recipientNameField.getText().toString();
+            String paymentMessage = paymentMessageField.getText().toString();
+            paymentAPI.sendPayment(recipientName, amount);
+        });
 
         // update header like in regular messaging app
-        updateHeader("Sending Money to " + recipientName);
+
 
         // start listener to track the amount added
         startAmountEnteredListener();
+        startRecipientNameEnteredListener();
+        startPaymentMessageEnteredListener();
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("recipientName")) {
+            String recipientName = intent.getStringExtra("recipientName");
+            updateHeader(recipientName);
+            recipientNameField.setText(recipientName);
+        }
 
 
 
@@ -90,7 +113,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void updateHeader(String recipientName) {
-        TextView headerTextView = findViewById(R.id.messagingHeader);
+        TextView headerTextView = findViewById(R.id.paymentInterfaceTitle);
         headerTextView.setText(recipientName);
     }
 
@@ -111,6 +134,44 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 // implementation after text has changed
+            }
+        });
+    }
+
+    private void startRecipientNameEnteredListener() {
+        recipientNameField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed for this example
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateHeader(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not needed for this example
+            }
+        });
+    }
+
+    private void startPaymentMessageEnteredListener() {
+        paymentMessageField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed for this example
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Perform any actions related to the payment message
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not needed for this example
             }
         });
     }
