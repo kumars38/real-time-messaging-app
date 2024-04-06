@@ -9,10 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Toast;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.ArrayAdapter;
@@ -21,34 +18,39 @@ import com.example.messagingapp.R;
 
 public class AccountActivity extends AppCompatActivity {
     private EditText prefNameET, fontSizeET;
-    private Spinner sysColorSpinner;
+    private Spinner colorSpinner;
     SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_account);
+        startEventColorSpinnerListener();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        /*
+        TODO - Fix LOLOLOLOL
         prefNameET = findViewById(R.id.prefNameResult);
         fontSizeET = findViewById(R.id.fontSizeResult);
-        sysColorSpinner = findViewById(R.id.sysColorSpinner);
-        startEventColorSpinnerListener();
+
+
 
         Button updateProfileBtn = findViewById(R.id.updateProfileBtn);
         updateProfileBtn.setOnClickListener(this::updateProfileBtnClicked);
+        */
+
     }
     private void startEventColorSpinnerListener() {
         Spinner spinner = findViewById(R.id.sysColorSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.colorsArray,
-                android.R.layout.simple_spinner_item
+                R.layout.spinner_list
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_list);
         spinner.setAdapter(adapter);
 
         // Set an item selected listener to perform actions when an item is selected
@@ -68,11 +70,10 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
     }
-
     private void updateProfileBtnClicked(View v){
         String prefName = prefNameET.getText().toString();
         String fontSize = fontSizeET.getText().toString();
-        String sysColor = sysColorSpinner.getSelectedItem().toString();
+        String sysColor = colorSpinner.getSelectedItem().toString();
 
        //logic for prefName
 
