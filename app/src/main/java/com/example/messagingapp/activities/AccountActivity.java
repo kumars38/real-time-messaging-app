@@ -2,6 +2,7 @@ package com.example.messagingapp.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,6 +88,9 @@ public class AccountActivity extends AppCompatActivity {
             case "Green": setTheme(R.style.GreenTheme); break;
         }
         recreate();
+    }
+
+    public void editPressed(View view) {
     }
 
 

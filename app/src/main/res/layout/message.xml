@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:textAlignment="viewStart"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
