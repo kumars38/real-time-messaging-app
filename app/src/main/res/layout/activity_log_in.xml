@@ -62,12 +62,11 @@
             android:textColor="@color/primary_txt"
             android:textSize="13sp" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/login_button"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
-            android:backgroundTint="@color/primary_btn"
             android:onClick="loginPressed"
             android:text="@string/log_in"
             android:textColor="@color/white"

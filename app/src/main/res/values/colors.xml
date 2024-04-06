@@ -16,4 +16,6 @@
     <color name="user_profile_gradient_start">#724fdb</color>
     <color name="user_profile_gradient_end">#39237d</color>
     <color name="user_profile_menu_text">#182693</color>
+    <color name="bluePrimary">#1C2E46</color>
+    <color name="blueBtn">#1F65A4</color>
 </resources>
