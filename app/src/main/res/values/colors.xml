@@ -30,10 +30,10 @@
     <color name="navRedTint">#f26682</color>
 
     <!--Green Theme -->
-    <color name="greenPrimary">#CB2739</color>
-    <color name="upg_green_start">#4287f5</color>
-    <color name="upg_green_end">#07285c</color>`
-    <color name="up_green_menu_text">#182693</color>`
-    <color name="greenBtnSec">#1F65A4</color>
-    <color name="navGreenTint">#7cacf7</color>
+    <color name="greenPrimary">#076309</color>
+    <color name="upg_green_start">#6fe372</color>
+    <color name="upg_green_end">#0b540d</color>`
+    <color name="up_green_menu_text">#032604</color>`
+    <color name="greenBtnSec">#16941a</color>
+    <color name="navGreenTint">#a7e8a9</color>
 </resources>
