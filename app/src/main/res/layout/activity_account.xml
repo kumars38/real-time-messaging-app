@@ -251,12 +251,11 @@
                                 android:textColor="@color/user_profile_menu_text"
                                 android:textSize="@dimen/textSize" />
 
-                            <TextView
-                                android:id="@+id/sysColorResult"
+                            <Spinner
+                                android:id="@+id/sysColorSpinner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="colorHere"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/secondary_txt"
                                 android:textSize="@dimen/textSize" />
