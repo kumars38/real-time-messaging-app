@@ -25,6 +25,7 @@
         <item name="buttonStylePrimary">@color/bluePrimary</item>
         <item name="buttonStyleSecondary">@color/blueBtnSec</item>
         <item name="navTint">@color/navTint</item>
+        <item name="android:textColorPrimary">@color/white</item> <!-- Font color of the title and icons in the app bar -->
     </style>
     <style name="RedTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/bluePrimary</item>
