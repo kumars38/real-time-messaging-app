@@ -19,8 +19,12 @@
         <item name="colorPrimary">@color/bluePrimary</item>
         <item name="colorPrimaryDark">@color/bluePrimary</item>
         <item name="colorSecondary">@color/bluePrimary</item>
+        <item name="textPrimary">@color/white</item>
         <item name="gradientStartColor">@color/upg_blue_start</item>
         <item name="gradientEndColor">@color/upg_blue_end</item>
+        <item name="buttonStylePrimary">@color/bluePrimary</item>
+        <item name="buttonStyleSecondary">@color/blueBtnSec</item>
+        <item name="navTint">@color/navTint</item>
     </style>
     <style name="RedTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/bluePrimary</item>

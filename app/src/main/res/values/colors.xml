@@ -19,8 +19,8 @@
     <color name="upg_blue_end">#07285c</color>
     <color name="user_profile_menu_text">#182693</color>
     <color name="bluePrimary">#1C2E46</color>
-    <color name="blueBtn">#1F65A4</color>
-
+    <color name="blueBtnSec">#1F65A4</color>
+    <color name="navTint">#7cacf7</color>
     <color name="redPrimary">#CB2739</color>
 
 </resources>

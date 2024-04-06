@@ -2,4 +2,8 @@
 <resources>
     <attr name="gradientStartColor" format="color"/>
     <attr name="gradientEndColor" format="color"/>
+    <attr name="buttonStylePrimary" format="color"/>
+    <attr name="buttonStyleSecondary" format="color"/>
+    <attr name="navTint" format="color"/>
+    <attr name="textPrimary" format="color"/>
 </resources>

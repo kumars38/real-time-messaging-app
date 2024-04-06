@@ -276,6 +276,7 @@
                     android:layout_marginTop="25dp"
                     android:text="Update Profile"
                     android:onClick="updateProfileBtnClicked"
+                    android:backgroundTint="?attr/buttonStyleSecondary"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
