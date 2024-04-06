@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    //id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -45,7 +47,11 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //Import Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
 }
