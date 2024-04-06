@@ -51,9 +51,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core);
+
+    //Import Firebase
     implementation ("com.google.firebase:firebase-core:16.0.8");
     implementation ("com.google.firebase:firebase-inappmessaging:17.0.3");
     implementation(libs.firebase.messaging)
-    //Import Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
 }
