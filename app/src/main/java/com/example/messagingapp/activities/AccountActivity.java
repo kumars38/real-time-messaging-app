@@ -1,5 +1,6 @@
 package com.example.messagingapp.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -8,15 +9,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.EditText;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import com.example.messagingapp.R;
 
 public class AccountActivity extends AppCompatActivity {
-
+    private EditText prefNameET, fontSizeET;
+    private Spinner sysColorSpinner;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +33,13 @@ public class AccountActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        prefNameET = findViewById(R.id.prefNameResult);
+        fontSizeET = findViewById(R.id.fontSizeResult);
+        sysColorSpinner = findViewById(R.id.sysColorSpinner);
         startEventColorSpinnerListener();
+
+        Button updateProfileBtn = findViewById(R.id.updateProfileBtn);
+        updateProfileBtn.setOnClickListener(this::updateProfileBtnClicked);
     }
     private void startEventColorSpinnerListener() {
         Spinner spinner = findViewById(R.id.sysColorSpinner);
@@ -57,6 +69,24 @@ public class AccountActivity extends AppCompatActivity {
         });
     }
 
+    private void updateProfileBtnClicked(View v){
+        String prefName = prefNameET.getText().toString();
+        String fontSize = fontSizeET.getText().toString();
+        String sysColor = sysColorSpinner.getSelectedItem().toString();
 
-    // TODO
+       //logic for prefName
+
+        //logic for fontSize
+
+
+        //logic for systemTheme
+        switch(sysColor){
+            case "Blue": setTheme(R.style.BlueTheme); break;
+            case "Red": setTheme(R.style.RedTheme); break;
+            case "Green": setTheme(R.style.GreenTheme); break;
+        }
+        recreate();
+    }
+
+
 }

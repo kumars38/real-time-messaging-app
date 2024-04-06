@@ -16,12 +16,18 @@
     </style>
     -->
     <style name="BlueTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:colorPrimary">@color/bluePrimary</item>
+        <item name="colorPrimary">@color/bluePrimary</item>
+        <item name="colorPrimaryDark">@color/bluePrimary</item>
+        <item name="colorSecondary">@color/bluePrimary</item>
     </style>
     <style name="RedTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:colorPrimary">@color/bluePrimary</item>
+        <item name="colorPrimary">@color/bluePrimary</item>
+        <item name="colorPrimaryDark">@color/bluePrimary</item>
+        <item name="colorSecondary">@color/bluePrimary</item>
     </style>
     <style name="GreenTheme" parent="Theme.MaterialComponents.Light">
-        <item name="android:colorPrimary">@color/bluePrimary</item>
+        <item name="colorPrimary">@color/bluePrimary</item>
+        <item name="colorPrimaryDark">@color/bluePrimary</item>
+        <item name="colorSecondary">@color/bluePrimary</item>
     </style>
 </resources>
