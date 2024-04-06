@@ -49,6 +49,7 @@
 
         <ImageButton
             android:id="@+id/navHomeBtn"
+            android:backgroundTint="?attr/navTint"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -63,6 +64,7 @@
         <ImageButton
             android:id="@+id/navChatBtn"
             android:layout_width="wrap_content"
+            android:backgroundTint="?attr/navTint"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -76,6 +78,7 @@
         <ImageButton
             android:id="@+id/navPaymentBtn"
             android:layout_width="wrap_content"
+            android:backgroundTint="?attr/navTint"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -89,6 +92,7 @@
         <ImageButton
             android:id="@+id/navAccountBtn"
             android:layout_width="wrap_content"
+            android:backgroundTint="?attr/navTint"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"

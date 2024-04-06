@@ -8,7 +8,7 @@
         android:id="@+id/recipientButton"
         android:layout_width="match_parent"
         android:layout_height="96dp"
-        android:backgroundTint="@color/primary_btn"
+        android:backgroundTint="?attr/buttonStyleSecondary"
         android:onClick="launchMessaging"
         android:text="..."
         android:textSize="18sp"
