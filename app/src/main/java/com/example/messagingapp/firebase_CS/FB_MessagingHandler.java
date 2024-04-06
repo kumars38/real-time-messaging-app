@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -23,5 +24,7 @@ public class FB_MessagingHandler extends FirebaseMessagingService {
         super.onMessageReceived(message);
         //Log.d("Firebase CloudMsg", "Msg: " + message.getNotification().getBody());
     }
+
+
 
 }

@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     //id("com.android.application")
     id("com.google.gms.google-services")
-
 }
 
 android {
@@ -15,6 +14,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,13 +48,15 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core);
+    androidTestImplementation(libs.espresso.core)
 
-    //Import Firebase
-    implementation ("com.google.firebase:firebase-core:16.0.8");
-    implementation ("com.google.firebase:firebase-inappmessaging:17.0.3");
-    implementation(libs.firebase.messaging)
+    //Import Firebase services
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-firestore")
+
+    implementation("androidx.multidex:multidex:2.0.1")
 }
