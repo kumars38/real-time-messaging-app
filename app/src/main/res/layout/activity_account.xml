@@ -8,7 +8,7 @@
     android:background="#f5f5f5"
     tools:context=".activities.AccountActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,9 +24,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"><![CDATA[>
-
-                ]]>
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout2"
@@ -42,7 +40,7 @@
                         android:layout_height="360dp"
                         android:background="@drawable/user_background"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -66,6 +64,7 @@
                         android:layout_marginTop="25dp"
                         android:text="Jane Doe"
 
+                        android:textAlignment="center"
                         android:textColor="@color/enter_bg"
                         android:textSize="25sp"
                         app:layout_constraintEnd_toEndOf="@+id/userProfile"
@@ -109,7 +108,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/role"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <TextView
@@ -119,7 +118,7 @@
                                 android:layout_weight="1"
                                 android:text="Accounting Manager"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/secondary_txt"
+                                android:textColor="@color/primary_txt"
                                 android:textSize="@dimen/textSize" />
 
                         </LinearLayout>
@@ -144,7 +143,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Work Number"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
                             <TextView
@@ -154,7 +153,7 @@
                                 android:layout_weight="1"
                                 android:text="123-456-7890"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/secondary_txt"
+                                android:textColor="@color/primary_txt"
                                 android:textSize="@dimen/textSize" />
 
                         </LinearLayout>
@@ -179,14 +178,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Preferred Name"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
-                            <TextView
+                            <EditText
                                 android:id="@+id/prefNameResult"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:background="@null"
+                                android:inputType="text"
                                 android:text="Jane Doe"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/secondary_txt"
@@ -213,14 +214,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Font Size"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
-                            <TextView
+                            <EditText
                                 android:id="@+id/fontSizeResult"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:background="@null"
+                                android:inputType="text"
                                 android:text="textSizeHere"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/secondary_txt"
@@ -248,15 +251,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="System Color"
-                                android:textColor="@color/user_profile_menu_text"
+                                android:textColor="?attr/upMenuText"
                                 android:textSize="@dimen/textSize" />
 
-                            <TextView
-                                android:id="@+id/sysColorResult"
+                            <Spinner
+                                android:id="@+id/sysColorSpinner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="colorHere"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/secondary_txt"
                                 android:textSize="@dimen/textSize" />
@@ -267,18 +269,20 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/updateProfileBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="24dp"
                     android:layout_marginTop="25dp"
-                    android:text="Edit Profile"
+                    android:text="Update Profile"
+                    android:onClick="updateProfileBtnClicked"
+                    android:backgroundTint="?attr/buttonStyleSecondary"
                     app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
