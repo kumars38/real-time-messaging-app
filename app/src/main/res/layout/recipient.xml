@@ -11,7 +11,7 @@
         android:backgroundTint="?attr/buttonStyleSecondary"
         android:onClick="launchMessaging"
         android:text="..."
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

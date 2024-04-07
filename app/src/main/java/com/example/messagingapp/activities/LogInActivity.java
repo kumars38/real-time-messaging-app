@@ -12,6 +12,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.messagingapp.databinding.ActivityLogInBinding;
+import com.example.messagingapp.models.User;
+import com.example.messagingapp.singleton.MainUser;
 import com.example.messagingapp.utils.Firebase_CollectionFields;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,8 +32,6 @@ public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
     private static final KDC kdc = new KDC();
-
-
     private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,6 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
     }
-
-    //add listeners to here when needing to go from one page to another later
 
     public void loginPressed(View v) throws Exception{
 
@@ -55,7 +53,6 @@ public class LogInActivity extends AppCompatActivity {
             //startActivity(i);
         }
     }
-
 
     public void user_signIn(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -78,17 +75,22 @@ public class LogInActivity extends AppCompatActivity {
         kdc.updateUserPrivateKey(this.userId, str_key);
         kdc.updateMessagingSession(this.userId, str_key2);
 
-
-        db.collection(Firebase_CollectionFields.ATTR_COLLECTION)
-                .whereEqualTo(Firebase_CollectionFields.ATTR_USERNAME, binding.EmailInput.getText().toString())
+        db.collection(Firebase_CollectionFields.ATTR_COLLECTION_USER_PROFILE)
+                .whereEqualTo(Firebase_CollectionFields.ATTR_EMAIL, binding.EmailInput.getText().toString())
                 .whereEqualTo(Firebase_CollectionFields.ATTR_PASSWORD, binding.pwdInput.getText().toString())
                 .get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful() && task.getResult() != null && !task.getResult().getDocuments().isEmpty()) {
                         DocumentSnapshot docSnap = task.getResult().getDocuments().get(0);
                         String clientID = docSnap.getId();
+                        Log.d("Logged in ID:",clientID);
+
+                        // save query result as user object
+                        User user = docSnap.toObject(User.class);
                         Intent home_page = new Intent(this, HomePageActivity.class);
                         displayHelpText("Company Login Successful");
+
+                        MainUser.getInstance().setUserData(user);
                         startActivity(home_page);
                     }
                     else {
@@ -98,11 +100,9 @@ public class LogInActivity extends AppCompatActivity {
                 });
     }
 
-
     private void displayHelpText(String txt){
         Toast.makeText(getApplicationContext(), txt, Toast.LENGTH_SHORT).show();
     }
-
 
     //TODO: if time permits, add this to a separate file to segregate concern
     private boolean validLogInCredFormat() {
@@ -124,8 +124,6 @@ public class LogInActivity extends AppCompatActivity {
         else {
             return true;
         }
-
-
     }
 
     private String getUserId(String email){

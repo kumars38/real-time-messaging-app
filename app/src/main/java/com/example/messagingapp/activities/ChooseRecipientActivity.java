@@ -9,22 +9,28 @@ import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.messagingapp.R;
+import com.example.messagingapp.models.User;
+import com.example.messagingapp.singleton.MainUser;
+import com.example.messagingapp.utils.Firebase_CollectionFields;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseRecipientActivity extends AppCompatActivity {
 
-    ArrayList<String>  recipientsList = new ArrayList<>();
+    ArrayList<User> recipientsList = new ArrayList<>();
     LinearLayout layoutList;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        user = MainUser.getInstance().getUserData();
+
         EdgeToEdge.enable(this);
 
         setContentView(R.layout.activity_choose_recipient);
@@ -32,23 +38,41 @@ public class ChooseRecipientActivity extends AppCompatActivity {
         layoutList = findViewById(R.id.recipientsLayout);
 
         this.getRecipientsFromDB();
-        this.setRecipientButtons();
     }
 
     private void getRecipientsFromDB() {
-        // TODO get the actual recipients from our mock account DB
+        String userEmail = user.getEmail();
 
-        for (int i=0; i<10; i++) {
-            recipientsList.add("Employee "+i);
-        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(Firebase_CollectionFields.ATTR_COLLECTION_USER_PROFILE)
+                // exclude the sender from recipient query
+                .whereNotEqualTo(Firebase_CollectionFields.ATTR_EMAIL, userEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful() && task.getResult() != null && !task.getResult().getDocuments().isEmpty()) {
+
+                        List<DocumentSnapshot> recipientsQueryData = task.getResult().getDocuments();
+                        for (DocumentSnapshot docSnap : recipientsQueryData) {
+                            User recipient = docSnap.toObject(User.class);
+                            recipientsList.add(recipient);
+                        }
+                        // now that recipients are found from query, update view
+                        this.setRecipientButtons();
+                    }
+                });
     }
 
     private void setRecipientButtons() {
-        // TODO iterate over User class not Strings
-        for (String recipientName: recipientsList) {
+        Log.d("DEBUG_CHOOSE_RECIP",recipientsList.toString());
+        for (User recipient: recipientsList) {
+            // using preferred names here for display
+            String recipFirst = recipient.getPreferredName().getFirst();
+            String recipLast = recipient.getPreferredName().getLast();
+            Log.d("DEBUG_CHOOSE_RECIP",recipFirst);
+            Log.d("DEBUG_CHOOSE_RECIP",recipLast);
             View v = getLayoutInflater().inflate(R.layout.recipient,null,false);
             Button b = v.findViewById(R.id.recipientButton);
-            b.setText(recipientName);
+            b.setText(recipFirst+" "+recipLast);
             layoutList.addView(v);
         }
     }
@@ -56,10 +80,27 @@ public class ChooseRecipientActivity extends AppCompatActivity {
     public void launchMessaging(View v) {
         Intent i = new Intent(this, MessagingActivity.class);
         Button b = (Button) v;
+        String chosenName = b.getText().toString();
+        String first = chosenName.split(" ")[0];
+        String last = chosenName.split(" ")[1];
 
-        // replace with full recipient obj
-        String chosenRecipient = b.getText().toString();
-        i.putExtra("recipientInfo",chosenRecipient);
-        startActivity(i);
+        boolean found = false;
+        for (User r : recipientsList) {
+            // find the matching recipient obj
+            if (r.getPreferredName().getFirst().equals(first)
+                    && r.getPreferredName().getLast().equals(last)) {
+                found = true;
+                // put recipient so messaging activity can refer to it
+                i.putExtra("recipient", r);
+                Log.d("DEBUG_CHOOSE_RECIP", "found recip, adding to intent");
+            }
+        }
+        if (!found) {
+            Log.d("DEBUG_CHOOSE_RECIP", "recipient mismatch on button press");
+        }
+        else {
+            // proceed to messaging the chosen recipient
+            startActivity(i);
+        }
     }
 }

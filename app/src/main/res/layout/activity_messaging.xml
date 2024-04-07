@@ -71,7 +71,8 @@
             android:hint="@string/enterMessageHintText"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:textAlignment="viewStart" />
+            android:textAlignment="viewStart"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/sendMsgButton"
