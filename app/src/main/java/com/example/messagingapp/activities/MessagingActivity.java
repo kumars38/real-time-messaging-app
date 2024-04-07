@@ -54,7 +54,6 @@ public class MessagingActivity extends AppCompatActivity {
 
         // TODO this part would interact with message log backend
         messageList.add(s);
-
         // reset the text field
         e.setText("");
         Log.d("saved message: ", s); // debug log

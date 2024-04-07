@@ -1,7 +1,11 @@
 package security.manager;
 
+import android.util.Log;
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class CryptoMethods {
@@ -32,6 +36,18 @@ public class CryptoMethods {
         return originalKey;
     }
 
+    public static SecretKey generateKey() {
+        KeyGenerator generator;
+        try {
+            generator = KeyGenerator.getInstance("AES");
+        }catch(Exception e){
+            Log.d("Security", "Exception occur creating KeyGenerator");
+            return null;
+        }
+        generator.init(128);
+        SecretKey key = generator.generateKey();
+        return key;
+    }
     public static void main(String[] args) {
         String msg = "HelloWorld";
         KDC kdc = new KDC();

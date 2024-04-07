@@ -2,6 +2,7 @@ package com.example.messagingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -12,29 +13,37 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.messagingapp.databinding.ActivityLogInBinding;
 import com.example.messagingapp.utils.Firebase_CollectionFields;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+import javax.crypto.SecretKey;
+
+import security.manager.CryptoMethods;
 import security.manager.KDC;
 
 //upon login, KDC give user a key,
 public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
-    private KDC kdc;
+    private static final KDC kdc = new KDC();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
     }
 
     //add listeners to here when needing to go from one page to another later
 
-    public void loginPressed(View v) {
+    public void loginPressed(View v) throws Exception{
+
         if (!this.validLogInCredFormat()) {
             // TODO reject user, show error msg etc
         }
@@ -47,6 +56,10 @@ public class LogInActivity extends AppCompatActivity {
 
 
     public void user_signIn(){
+        //new Thread(() -> { kdc.updateKey("0987654321", "xiaotuziguaiguai");}).start();
+        SecretKey key = CryptoMethods.generateKey();
+        String str_key = CryptoMethods.SKeyToString(key);
+        kdc.updateKey("0987654321", str_key);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION)
                 .whereEqualTo(Firebase_CollectionFields.ATTR_USERNAME, binding.EmailInput.getText().toString())
