@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.PrintWriter;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.crypto.SecretKey;
@@ -59,10 +60,23 @@ public class LogInActivity extends AppCompatActivity {
     public void user_signIn(){
 
         SecretKey key = CryptoMethods.generateKey();
+        SecretKey key2 = CryptoMethods.generateKey();
         String str_key = CryptoMethods.SKeyToString(key);
-        kdc.updateKey("0987654321", str_key);
+        String str_key2 = CryptoMethods.SKeyToString(key2);
         this.userId = getUserId(binding.EmailInput.getText().toString());
+
+        try{
+        PrintWriter cacheStore = new PrintWriter("cache");
+        cacheStore.println(this.userId);
+        cacheStore.close();
+        }
+        catch (Exception ex){
+            Log.e("Login", "Cache failed to store, Please reset PC authentication");
+        }
+
         //store userId in a local file
+        kdc.updateUserPrivateKey(this.userId, str_key);
+        kdc.updateMessagingSession(this.userId, str_key2);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION)

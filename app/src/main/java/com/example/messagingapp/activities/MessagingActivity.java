@@ -16,6 +16,9 @@ import com.example.messagingapp.R;
 
 import java.util.ArrayList;
 
+import security.manager.AuthenticationServer;
+import security.manager.KDC;
+
 
 //then upon message user authenticate then get chat with messaging key
 
@@ -26,7 +29,10 @@ public class MessagingActivity extends AppCompatActivity {
 
     LinearLayout messageLayoutList;
 
+    public static final KDC kdc = new KDC();
 
+    //ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
+    public static final AuthenticationServer AS = new AuthenticationServer(kdc);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,8 @@ public class MessagingActivity extends AppCompatActivity {
         this.updateHeader(recipientName);
         this.updateMessageLayout();
         this.startEnterMessageListener();
+        AS.start();
+
     }
 
     public boolean messageAuthentication(){
@@ -64,6 +72,7 @@ public class MessagingActivity extends AppCompatActivity {
 
         // update view
         this.updateMessageLayout();
+
     }
 
 
