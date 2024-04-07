@@ -47,7 +47,7 @@ public class MessagingActivity extends AppCompatActivity {
     }
 
     public boolean messageAuthentication(){
-        
+        return true;
     }
 
     public void saveMessage(View v) {

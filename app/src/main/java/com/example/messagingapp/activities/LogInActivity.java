@@ -29,6 +29,8 @@ public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
     private static final KDC kdc = new KDC();
+
+
     private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,13 @@ public class LogInActivity extends AppCompatActivity {
 
 
     public void user_signIn(){
-        //new Thread(() -> { kdc.updateKey("0987654321", "xiaotuziguaiguai");}).start();
+
         SecretKey key = CryptoMethods.generateKey();
         String str_key = CryptoMethods.SKeyToString(key);
         kdc.updateKey("0987654321", str_key);
         this.userId = getUserId(binding.EmailInput.getText().toString());
+        //store userId in a local file
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION)
                 .whereEqualTo(Firebase_CollectionFields.ATTR_USERNAME, binding.EmailInput.getText().toString())
