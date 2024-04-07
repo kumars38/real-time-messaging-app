@@ -16,11 +16,16 @@ import com.example.messagingapp.R;
 
 import java.util.ArrayList;
 
+
+//then upon message user authenticate then get chat with messaging key
+
+
 public class MessagingActivity extends AppCompatActivity {
 
     ArrayList<String> messageList = new ArrayList<>();
 
     LinearLayout messageLayoutList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class MessagingActivity extends AppCompatActivity {
         // update view
         this.updateMessageLayout();
     }
+
+
 
     // TODO pull from chat log instead of messageList to update the view
     private void updateMessageLayout() {

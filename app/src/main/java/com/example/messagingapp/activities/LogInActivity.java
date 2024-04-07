@@ -17,10 +17,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+import security.manager.KDC;
+
+//upon login, KDC give user a key,
 public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
-
+    private KDC kdc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
