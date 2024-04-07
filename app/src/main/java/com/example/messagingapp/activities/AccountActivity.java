@@ -26,22 +26,15 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_account);
-        startEventColorSpinnerListener();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        /*
-        TODO - Fix LOLOLOLOL
-        prefNameET = findViewById(R.id.prefNameResult);
-        fontSizeET = findViewById(R.id.fontSizeResult);
 
+        startEventColorSpinnerListener();
 
-
-        Button updateProfileBtn = findViewById(R.id.updateProfileBtn);
-        updateProfileBtn.setOnClickListener(this::updateProfileBtnClicked);
-        */
 
     }
     private void startEventColorSpinnerListener() {
@@ -62,9 +55,7 @@ public class AccountActivity extends AppCompatActivity {
                 String selectedColor = parent.getItemAtPosition(position).toString();
 
                 // Display a toast with the selected color
-                //Toast.makeText(AccountActivity.this, "Selected color: " + selectedColor, Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Do nothing when nothing is selected
@@ -76,18 +67,13 @@ public class AccountActivity extends AppCompatActivity {
         String fontSize = fontSizeET.getText().toString();
         String sysColor = colorSpinner.getSelectedItem().toString();
 
-       //logic for prefName
+        //logic for prefName
 
         //logic for fontSize
 
 
         //logic for systemTheme
-        switch(sysColor){
-            case "Blue": setTheme(R.style.BlueTheme); break;
-            case "Red": setTheme(R.style.RedTheme); break;
-            case "Green": setTheme(R.style.GreenTheme); break;
-        }
-        recreate();
+
     }
 
     public void editPressed(View view) {

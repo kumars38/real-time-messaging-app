@@ -111,7 +111,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void navChatPressed(View v) {
         Intent i = new Intent(this, ChooseRecipientActivity.class);
-
+        i.putExtra("uid",uid);
         // can pass in the user's details here
         // i.putExtra(..., ...)
         startActivity(i);
@@ -119,6 +119,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     public void navPaymentPressed(View v) {
         Intent i = new Intent(this, PaymentActivity.class);
+        i.putExtra("uid",uid);
         startActivity(i);
     }
 
