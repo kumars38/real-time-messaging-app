@@ -21,6 +21,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +55,7 @@ public class LogInActivity extends AppCompatActivity {
                         DocumentSnapshot docSnap = task.getResult().getDocuments().get(0);
                         String clientID = docSnap.getId();
                         Intent home_page = new Intent(this, HomePageActivity.class);
+                        home_page.putExtra("uid",clientID);
                         displayHelpText("Company Login Successful");
                         startActivity(home_page);
                     }
