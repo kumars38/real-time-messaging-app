@@ -14,6 +14,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="homePageHeader"><![CDATA[Hello, <name>]]></string>
+    <string name="userFullName"></string>
+    <string name="helloUser">Hello @string/userFullName</string>
     <string name="homePageSecondaryMsg">You are signed in.</string>
     <string name="role">Role</string>
     <string-array name="colorsArray">

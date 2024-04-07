@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,9 +27,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Map;
+
 
 public class HomePageActivity extends AppCompatActivity {
     public String uid;
+    private TextView textView;
+
     private String fullName;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
@@ -42,7 +47,7 @@ public class HomePageActivity extends AppCompatActivity {
             return insets;
         });
         uid = getIntent().getStringExtra("uid");
-        Toast.makeText(this,"uid: "+uid, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"uid: "+uid, Toast.LENGTH_SHORT).show();
         userProfileListener();
     }
     public void userProfileListener(){
@@ -58,6 +63,16 @@ public class HomePageActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("DocSnippet", "Current data: " + snapshot.getData());
+                    // Retrieve the full name field
+                    Map<String, Object> preferredNameMap = (Map<String, Object>) snapshot.getData().get("preferredName");
+
+                    assert preferredNameMap != null;
+                    String firstName = (String) preferredNameMap.get("first");
+                    String lastName = (String) preferredNameMap.get("last");
+
+                    String fullName = firstName +" "+ lastName;
+                    textView = findViewById(R.id.homePageHeader);
+                    textView.setText(fullName);
                 } else {
                     Log.d("DocSnippet", "Current data: null");
                 }
