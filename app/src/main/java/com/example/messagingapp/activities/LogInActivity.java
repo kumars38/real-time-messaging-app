@@ -58,7 +58,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
     public void user_signIn(){
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         SecretKey key = CryptoMethods.generateKey();
         SecretKey key2 = CryptoMethods.generateKey();
         String str_key = CryptoMethods.SKeyToString(key);
@@ -78,7 +78,7 @@ public class LogInActivity extends AppCompatActivity {
         kdc.updateUserPrivateKey(this.userId, str_key);
         kdc.updateMessagingSession(this.userId, str_key2);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION)
                 .whereEqualTo(Firebase_CollectionFields.ATTR_USERNAME, binding.EmailInput.getText().toString())
                 .whereEqualTo(Firebase_CollectionFields.ATTR_PASSWORD, binding.pwdInput.getText().toString())
@@ -134,7 +134,6 @@ public class LogInActivity extends AppCompatActivity {
         AtomicReference<String> workNumber = new AtomicReference<>();
         db.collection("userProfile")
                 .whereEqualTo("email", email)
-                .limit(1)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
