@@ -13,13 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.messagingapp.databinding.ActivityLogInBinding;
 import com.example.messagingapp.utils.Firebase_CollectionFields;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.crypto.SecretKey;
 
@@ -31,6 +29,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
     private static final KDC kdc = new KDC();
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +59,7 @@ public class LogInActivity extends AppCompatActivity {
         SecretKey key = CryptoMethods.generateKey();
         String str_key = CryptoMethods.SKeyToString(key);
         kdc.updateKey("0987654321", str_key);
+        this.userId = getUserId(binding.EmailInput.getText().toString());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION)
                 .whereEqualTo(Firebase_CollectionFields.ATTR_USERNAME, binding.EmailInput.getText().toString())
@@ -109,6 +109,37 @@ public class LogInActivity extends AppCompatActivity {
 
 
     }
+
+    private String getUserId(String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        AtomicReference<String> workNumber = new AtomicReference<>();
+        db.collection("userProfile")
+                .whereEqualTo("email", email)  // Assuming 'email' is the field name
+                .limit(1)  // Assumes email is unique and you only want one result
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (!querySnapshot.isEmpty()) {
+                            // Assuming 'workNumber' is the field you're looking for
+                            workNumber.set(querySnapshot.getDocuments().get(0).getString("workNumber"));
+
+                            Log.d("WorkNumberFound", "Work number for email " + email + " is: " + workNumber);
+
+                            // Do something with the workNumber, like updating UI
+                        } else {
+                            Log.d("NoDocumentFound", "No document found with the email " + email);
+                            // Handle the case where no document was found
+                        }
+                    } else {
+                        Log.e("FirestoreError", "Error getting documents: ", task.getException());
+                        // Handle the error
+                    }
+                });
+
+        return workNumber.toString();
+    }
+
 
     /*
     // TODO REMOVE TESTING DB LATER

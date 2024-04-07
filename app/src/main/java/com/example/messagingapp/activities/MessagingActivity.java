@@ -46,6 +46,10 @@ public class MessagingActivity extends AppCompatActivity {
         this.startEnterMessageListener();
     }
 
+    public boolean messageAuthentication(){
+        
+    }
+
     public void saveMessage(View v) {
         // extract current message input
         // TODO save as Message class which also contains timestamp, ...
