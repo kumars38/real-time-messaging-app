@@ -2,6 +2,7 @@ package com.example.messagingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -14,24 +15,37 @@ import com.example.messagingapp.databinding.ActivityLogInBinding;
 import com.example.messagingapp.utils.Firebase_CollectionFields;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
+import java.io.PrintWriter;
+import java.util.concurrent.atomic.AtomicReference;
 
+import javax.crypto.SecretKey;
+
+import security.manager.CryptoMethods;
+import security.manager.KDC;
+
+//upon login, KDC give user a key,
 public class LogInActivity extends AppCompatActivity {
 
     private ActivityLogInBinding binding;
+    private static final KDC kdc = new KDC();
 
+
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
     }
 
     //add listeners to here when needing to go from one page to another later
 
-    public void loginPressed(View v) {
+    public void loginPressed(View v) throws Exception{
+
         if (!this.validLogInCredFormat()) {
             // TODO reject user, show error msg etc
         }
@@ -45,6 +59,26 @@ public class LogInActivity extends AppCompatActivity {
 
     public void user_signIn(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        SecretKey key = CryptoMethods.generateKey();
+        SecretKey key2 = CryptoMethods.generateKey();
+        String str_key = CryptoMethods.SKeyToString(key);
+        String str_key2 = CryptoMethods.SKeyToString(key2);
+        this.userId = getUserId(binding.EmailInput.getText().toString());
+
+        try{
+        PrintWriter cacheStore = new PrintWriter("cache");
+        cacheStore.println(this.userId);
+        cacheStore.close();
+        }
+        catch (Exception ex){
+            Log.e("Login", "Cache failed to store, Please reset PC authentication");
+        }
+
+        //store userId in a local file
+        kdc.updateUserPrivateKey(this.userId, str_key);
+        kdc.updateMessagingSession(this.userId, str_key2);
+
+
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION)
                 .whereEqualTo(Firebase_CollectionFields.ATTR_USERNAME, binding.EmailInput.getText().toString())
                 .whereEqualTo(Firebase_CollectionFields.ATTR_PASSWORD, binding.pwdInput.getText().toString())
@@ -93,6 +127,37 @@ public class LogInActivity extends AppCompatActivity {
 
 
     }
+
+    private String getUserId(String email){
+        //TODO: fix exerything so that it go by email not by userId
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        AtomicReference<String> workNumber = new AtomicReference<>();
+        db.collection("userProfile")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (!querySnapshot.isEmpty()) {
+                            // Assuming 'workNumber' is the field you're looking for
+                            workNumber.set(querySnapshot.getDocuments().get(0).getString("workNumber"));
+
+                            Log.d("WorkNumberFound", "Work number for email " + email + " is: " + workNumber);
+
+                            // Do something with the workNumber, like updating UI
+                        } else {
+                            Log.d("NoDocumentFound", "No document found with the email " + email);
+                            // Handle the case where no document was found
+                        }
+                    } else {
+                        Log.e("FirestoreError", "Error getting documents: ", task.getException());
+                        // Handle the error
+                    }
+                });
+
+        return workNumber.toString();
+    }
+
 
     /*
     // TODO REMOVE TESTING DB LATER

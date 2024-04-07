@@ -16,12 +16,23 @@ import com.example.messagingapp.R;
 
 import java.util.ArrayList;
 
+import security.manager.AuthenticationServer;
+import security.manager.KDC;
+
+
+//then upon message user authenticate then get chat with messaging key
+
+
 public class MessagingActivity extends AppCompatActivity {
 
     ArrayList<String> messageList = new ArrayList<>();
 
     LinearLayout messageLayoutList;
 
+    public static final KDC kdc = new KDC();
+
+    //TODO:ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
+    public static final AuthenticationServer AS = new AuthenticationServer(kdc);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +50,12 @@ public class MessagingActivity extends AppCompatActivity {
         this.updateHeader(recipientName);
         this.updateMessageLayout();
         this.startEnterMessageListener();
+        AS.start();
+
+    }
+
+    public boolean messageAuthentication(){
+        return true;
     }
 
     public void saveMessage(View v) {
@@ -49,14 +66,16 @@ public class MessagingActivity extends AppCompatActivity {
 
         // TODO this part would interact with message log backend
         messageList.add(s);
-
         // reset the text field
         e.setText("");
         Log.d("saved message: ", s); // debug log
 
         // update view
         this.updateMessageLayout();
+
     }
+
+
 
     // TODO pull from chat log instead of messageList to update the view
     private void updateMessageLayout() {

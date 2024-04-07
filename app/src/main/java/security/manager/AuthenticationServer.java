@@ -1,5 +1,7 @@
 package security.manager;
 
+import android.util.Log;
+
 import javax.crypto.SecretKey;
 import java.io.*;
 import java.net.Inet4Address;
@@ -9,21 +11,23 @@ import java.util.HashMap;
 
 //this is for testing the socket connections and security features only
 public class AuthenticationServer extends Thread {
-    private HashMap<String, String> database;
+
     private String selfIp;
-    private int[] ports;
-
     private KDC kdc;
+    public static final int[] ports = {1234, 4567, 8888, 9999, 9876};
 
-    public AuthenticationServer(HashMap<String, String> database, int[] ports, KDC kdc)throws Exception{
+    public AuthenticationServer( KDC kdc){
+
         //will use different port later
         System.out.println("AuthenticationServer currently only supports one port in queue");
-        this.database = database;
-
-        this.selfIp = Inet4Address.getLocalHost().getHostAddress();
+        try {
+            this.selfIp = Inet4Address.getLocalHost().getHostAddress();
+        }
+        catch (Exception e){
+            Log.e("Security", "Problem obtaining host IP");
+        }
         System.out.println("Server IP:"+selfIp);
-
-        this.ports = ports;
+        ;
         this.kdc = kdc;
 
     }
@@ -62,7 +66,7 @@ public class AuthenticationServer extends Thread {
     }
     @Override
     public void run() {
-//        while(true) { the while loop is fucking up the sockets shall fix this later
+// due to the time constraint, not going to implement recycling of the ports, too much work on threads
         for (int port : ports) {
             try {
                 ServerSocket socket;
@@ -92,7 +96,6 @@ public class AuthenticationServer extends Thread {
                 this.interrupt();
             }
         }
-        //}
     }
 
 
