@@ -31,7 +31,7 @@ public class MessagingActivity extends AppCompatActivity {
 
     public static final KDC kdc = new KDC();
 
-    //ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
+    //TODO:ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
     public static final AuthenticationServer AS = new AuthenticationServer(kdc);
     @Override
     protected void onCreate(Bundle savedInstanceState) {

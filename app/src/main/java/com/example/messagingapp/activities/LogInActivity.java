@@ -129,11 +129,12 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private String getUserId(String email){
+        //TODO: fix exerything so that it go by email not by userId
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         AtomicReference<String> workNumber = new AtomicReference<>();
         db.collection("userProfile")
-                .whereEqualTo("email", email)  // Assuming 'email' is the field name
-                .limit(1)  // Assumes email is unique and you only want one result
+                .whereEqualTo("email", email)
+                .limit(1)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
