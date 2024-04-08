@@ -2,6 +2,8 @@ package security.manager;
 
 import android.util.Log;
 
+import com.example.messagingapp.models.User;
+import com.example.messagingapp.singleton.MainUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -101,14 +103,10 @@ public class KDC {
         return key;
 
     }
-    public SecretKey getSessionKey(String session_Id) throws NoSuchAlgorithmException {
-        if(session_cache.contains(session_Id)){
-            return session_cache.get(session_Id);
-        }
-        KeyGenerator generator = KeyGenerator.getInstance("AES");
-        generator.init(128);
-        SecretKey key = generator.generateKey();
-        session_cache.put(session_Id, key);
+    //TODO: security risk: no one should have knowledge of sessionKey except KDC, however, now its MainUser
+    public SecretKey getSessionKey() {
+        User user = MainUser.getUserData();
+        SecretKey key = CryptoMethods.StringToSKey(user.getMessagingKey());
         return key;
     }
 
