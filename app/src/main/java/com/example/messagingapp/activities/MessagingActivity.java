@@ -156,10 +156,10 @@ public class MessagingActivity extends AppCompatActivity {
         EditText e = findViewById(R.id.messageField);
         String s = e.getText().toString();
         SecretKey key = CryptoMethods.StringToSKey(user.getSecretKey());
-
+        SecretKey key2 = CryptoMethods.StringToSKey(user.getMessagingKey());
         e.setText("");
         try {
-            String encrptedS = CryptoMethods.encryption(s, key);
+            String encrptedS = CryptoMethods.encryption(CryptoMethods.encryption(s, key),key2);
             // save as message obj
             Message msg = createMessage(encrptedS);
             // reset the text field

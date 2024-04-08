@@ -33,7 +33,6 @@ public class AppClient {
 
     private BufferedReader receiver;
     private PrintWriter sender;
-
     private User user;
     public AtomicBoolean connected = new AtomicBoolean(false);
     public AppClient(String userId, String destinationIP, int port, KDC kdc, User user){
@@ -86,7 +85,8 @@ public class AppClient {
     }
     public boolean sendMessage(Message msg, String pairID)throws Exception{
         String message = msg.getMessage();
-        String decrptedMsg = CryptoMethods.decryption(message, decryptionKey);
+        String temp = CryptoMethods.decryption(message, sessionKey);
+        String decrptedMsg = CryptoMethods.decryption(temp, decryptionKey);
         Message msg2Send = createMessage(decrptedMsg, pairID);
         AtomicBoolean state = new AtomicBoolean(false);
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION_MESSAGING)
