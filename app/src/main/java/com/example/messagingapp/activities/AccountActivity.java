@@ -16,15 +16,20 @@ import android.widget.EditText;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import com.example.messagingapp.R;
+import com.example.messagingapp.models.User;
+import com.example.messagingapp.singleton.MainUser;
 
 public class AccountActivity extends AppCompatActivity {
     private EditText prefNameET, fontSizeET;
     private Spinner colorSpinner;
-    SharedPreferences sharedPreferences;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        user = MainUser.getInstance().getUserData();
+        updateTheme();
+
         setContentView(R.layout.activity_account);
         startEventColorSpinnerListener();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -71,25 +76,14 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
     }
-    private void updateProfileBtnClicked(View v){
-        String prefName = prefNameET.getText().toString();
-        String fontSize = fontSizeET.getText().toString();
-        String sysColor = colorSpinner.getSelectedItem().toString();
-
-       //logic for prefName
-
-        //logic for fontSize
-
-
-        //logic for systemTheme
-        switch(sysColor){
+    private void updateTheme() {
+        switch (user.getProfilePreferences().getSystemTheme()){
             case "Blue": setTheme(R.style.BlueTheme); break;
             case "Red": setTheme(R.style.RedTheme); break;
             case "Green": setTheme(R.style.GreenTheme); break;
+            default: setTheme(R.style.BlueTheme);
         }
-        recreate();
     }
-
     public void editPressed(View view) {
     }
 

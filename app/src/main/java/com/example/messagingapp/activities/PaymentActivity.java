@@ -20,6 +20,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.messagingapp.R;
+import com.example.messagingapp.models.User;
+import com.example.messagingapp.singleton.MainUser;
+
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -34,10 +37,13 @@ public class PaymentActivity extends AppCompatActivity {
     private EditText recipientNameField;
     private EditText paymentMessageField;
     private TextView headerTextView;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        user = MainUser.getInstance().getUserData();
         //EdgeToEdge.enable(this);
+        updateTheme();
         setContentView(R.layout.activity_payment);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -188,5 +194,14 @@ public class PaymentActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void updateTheme() {
+        switch (user.getProfilePreferences().getSystemTheme()){
+            case "Blue": setTheme(R.style.BlueTheme); break;
+            case "Red": setTheme(R.style.RedTheme); break;
+            case "Green": setTheme(R.style.GreenTheme); break;
+            default: setTheme(R.style.BlueTheme);
+        }
     }
 }
