@@ -42,13 +42,13 @@ public class MessagingActivity extends AppCompatActivity {
     String pairID;
 
     public static final KDC kdc = new KDC();
+    public static final AuthenticationServer AS = new AuthenticationServer(kdc);
 
     //TODO:ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
-    public static final AuthenticationServer AS = new AuthenticationServer(kdc);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // getting info passed from choose recipient activity
         Intent i = getIntent();
         recipient = (User) i.getSerializableExtra("recipient");
@@ -73,7 +73,10 @@ public class MessagingActivity extends AppCompatActivity {
 
         // start event listener for typing in msg field
         startEnterMessageListener();
-        AS.start();
+        if(!AS.serverStart){
+            AS.start();
+        }
+
     }
 
     public boolean messageAuthentication(){
