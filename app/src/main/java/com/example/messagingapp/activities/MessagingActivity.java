@@ -47,7 +47,9 @@ public class MessagingActivity extends AppCompatActivity {
 
     public static final KDC kdc = new KDC();
     public static final AuthenticationServer AS = new AuthenticationServer(kdc);
+
     public static final AppClient AC = new AppClient(user.getWorkNumber(), "", 1234, kdc, user);
+
 
     //TODO:ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
 
@@ -80,7 +82,6 @@ public class MessagingActivity extends AppCompatActivity {
         if(!AS.serverStart){
             AS.start();
         }
-
         while(!AC.connected.get()){
             AC.connect();
             try{

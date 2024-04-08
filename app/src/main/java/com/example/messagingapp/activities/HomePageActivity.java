@@ -67,7 +67,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void updateHeader() {
         TextView v = findViewById(R.id.homePageHeader);
-        v.setText("Hello, "+user.getEmployeeName().getFirst());
+        v.setText("Hello, "+user.getPreferredName().getFirst()+" "+user.getPreferredName().getLast());
     }
 
     // navigation stuff, can move to a common component later
