@@ -63,7 +63,6 @@
                         android:layout_height="0dp"
                         android:layout_marginTop="25dp"
                         android:text="Jane Doe"
-
                         android:textAlignment="center"
                         android:textColor="@color/enter_bg"
                         android:textSize="25sp"
@@ -108,8 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/role"
-                                android:textColor="?attr/upMenuText"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="?attr/upMenuText"/>
 
                             <TextView
                                 android:id="@+id/workRoleResult"
@@ -118,8 +116,7 @@
                                 android:layout_weight="1"
                                 android:text="Accounting Manager"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/primary_txt"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="@color/primary_txt"/>
 
                         </LinearLayout>
 
@@ -143,8 +140,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Work Number"
-                                android:textColor="?attr/upMenuText"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="?attr/upMenuText"/>
 
                             <TextView
                                 android:id="@+id/phoneNumberResult"
@@ -153,8 +149,7 @@
                                 android:layout_weight="1"
                                 android:text="123-456-7890"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/primary_txt"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="@color/primary_txt"/>
 
                         </LinearLayout>
 
@@ -178,8 +173,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Preferred Name"
-                                android:textColor="?attr/upMenuText"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="?attr/upMenuText"/>
 
                             <EditText
                                 android:id="@+id/prefNameResult"
@@ -190,8 +184,7 @@
                                 android:inputType="text"
                                 android:text="Jane Doe"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/secondary_txt"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="@color/secondary_txt"/>
                         </LinearLayout>
 
                         <View
@@ -214,20 +207,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Font Size"
-                                android:textColor="?attr/upMenuText"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="?attr/upMenuText"/>
 
-                            <EditText
-                                android:id="@+id/fontSizeResult"
+                            <Spinner
+                                android:id="@+id/fontSizeSpinner"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@null"
-                                android:inputType="text"
-                                android:text="textSizeHere"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/secondary_txt"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="@color/secondary_txt"/>
 
                         </LinearLayout>
 
@@ -251,8 +239,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="System Color"
-                                android:textColor="?attr/upMenuText"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="?attr/upMenuText"/>
 
                             <Spinner
                                 android:id="@+id/sysColorSpinner"
@@ -260,8 +247,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:textAlignment="viewEnd"
-                                android:textColor="@color/secondary_txt"
-                                android:textSize="@dimen/textSize" />
+                                android:textColor="@color/secondary_txt"/>
 
                         </LinearLayout>
                     </LinearLayout>
