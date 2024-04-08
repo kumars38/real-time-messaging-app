@@ -48,19 +48,5 @@ public class CryptoMethods {
         SecretKey key = generator.generateKey();
         return key;
     }
-    public static void main(String[] args) {
-        String msg = "HelloWorld";
-        KDC kdc = new KDC();
 
-
-        try {
-            SecretKey myKey = kdc.getKey("1");
-            String encrypMsg = encryption(msg, myKey);
-            System.out.println("encrypted message is :"+encrypMsg);
-            System.out.println(decryption(encrypMsg, myKey));
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
 }

@@ -46,7 +46,8 @@ public class AuthenticationServer extends Thread {
             }
             else{
                 SecretKey encryptionKey = CryptoMethods.StringToSKey(message[1]); // find user key
-                SecretKey sessionKey = kdc.getSessionKey(message[0]); // get user session key
+
+                SecretKey sessionKey = kdc.getSessionKey(); // get user session key
                 String sessionKey_msg = CryptoMethods.SKeyToString(sessionKey); //
                 //encrypt user session key with user key
 

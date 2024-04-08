@@ -13,6 +13,8 @@ public class User implements Serializable {
     private String secretKey;
     private String workNumber;
 
+    private String sessionKey;
+
     public String getEmail() {
         return email;
     }

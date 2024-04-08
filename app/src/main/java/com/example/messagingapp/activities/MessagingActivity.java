@@ -25,7 +25,11 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.crypto.SecretKey;
+
+import security.manager.AppClient;
 import security.manager.AuthenticationServer;
+import security.manager.CryptoMethods;
 import security.manager.KDC;
 
 
@@ -37,11 +41,12 @@ public class MessagingActivity extends AppCompatActivity {
     ArrayList<Message> messageList = new ArrayList<>();
     LinearLayout messageLayoutList;
     User recipient;
-    User user;
+    public static final User user = MainUser.getInstance().getUserData();;
     String pairID;
 
     public static final KDC kdc = new KDC();
     public static final AuthenticationServer AS = new AuthenticationServer(kdc);
+    public static final AppClient AC = new AppClient(user.getWorkNumber(), "", 1234, kdc, user);
 
     //TODO:ideally, this shouldn't be here, such Authentication Server should be a actual server but we don't ahve time
 
@@ -51,7 +56,6 @@ public class MessagingActivity extends AppCompatActivity {
         // getting info passed from choose recipient activity
         Intent i = getIntent();
         recipient = (User) i.getSerializableExtra("recipient");
-        user = MainUser.getInstance().getUserData();
         pairID = generatePairID();
 
         String recipientName = recipient.getPreferredName().getFirst()
@@ -76,10 +80,16 @@ public class MessagingActivity extends AppCompatActivity {
             AS.start();
         }
 
-    }
+        while(!AC.connected.get()){
+            AC.connect();
+            try{
+                Thread.sleep(3000);
+            }
+            catch(Exception e){
 
-    public boolean messageAuthentication(){
-        return true;
+            }
+        }
+
     }
 
     // create message object
@@ -145,21 +155,21 @@ public class MessagingActivity extends AppCompatActivity {
         // extract current message input
         EditText e = findViewById(R.id.messageField);
         String s = e.getText().toString();
-        // save as message obj
-        Message msg = createMessage(s);
-        // reset the text field
+        SecretKey key = CryptoMethods.StringToSKey(user.getSecretKey());
+
         e.setText("");
-        // Write to DB
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(Firebase_CollectionFields.ATTR_COLLECTION_MESSAGING)
-                // generate a unique UUID for the document
-                .document(UUID.randomUUID().toString().substring(0,20))
-                .set(msg)
-                .addOnSuccessListener(aVoid ->
-                        Log.d("DEBUG_MESSAGING", "Message (pairID=" + pairID +
-                                ", contents="+msg.getMessage()+") written to DB"))
-                .addOnFailureListener(aVoid ->
-                        Log.d("DEBUG_MESSAGING", "Error writing message: "+msg.getMessage()));
+        try {
+            String encrptedS = CryptoMethods.encryption(s, key);
+            // save as message obj
+            Message msg = createMessage(encrptedS);
+            // reset the text field
+            if(!AC.sendMessage(msg, pairID)){
+                Log.d("MessagingActivity", "Exception on AC sending Message");
+            }
+        }
+        catch (Exception ex){
+            Log.d("MessagingActivity", "Message failed to send");
+        }
     }
 
     // TODO need to make this layout nicer
