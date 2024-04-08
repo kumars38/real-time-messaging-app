@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -111,6 +112,19 @@ public class MessagingActivity extends AppCompatActivity {
             case "Green": setTheme(R.style.GreenTheme); break;
             default: setTheme(R.style.BlueTheme);
         }
+    }
+    private void updateFontSize(){
+        float fontSize = 15;
+        switch(user.getProfilePreferences().getFontSize()){
+            case "Small": fontSize = 12; break;
+            case "Medium": fontSize = 15; break;
+            case "Large": fontSize= 18; break;
+        }
+
+        TextView recipientBox = findViewById(R.id.recipientButton);
+
+        recipientBox.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+
     }
 
     // OLD

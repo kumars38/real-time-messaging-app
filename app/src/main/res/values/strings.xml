@@ -23,5 +23,10 @@
         <item>Red</item>
         <item>Green</item>
     </string-array>
+    <string-array name="fontSizeArray">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
     <string name="edit_profile">Edit Profile</string>
 </resources>

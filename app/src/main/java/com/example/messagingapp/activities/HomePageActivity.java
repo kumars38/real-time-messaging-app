@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.messagingapp.R;
@@ -33,7 +36,7 @@ public class HomePageActivity extends AppCompatActivity {
         });
 
         this.updateHeader();
-
+        this.updateFontSize();
     }
 
     private void updateTheme() {
@@ -74,5 +77,30 @@ public class HomePageActivity extends AppCompatActivity {
         Intent i = new Intent(this, AccountActivity.class);
         i.putExtra("user",user);
         startActivity(i);
+    }
+    private void updateFontSize(){
+        float fontSizeHeader = 18;
+        float fontSizeSmall = 15;
+        switch(user.getProfilePreferences().getFontSize()) {
+            case "Small":
+                fontSizeSmall = 12;
+                fontSizeHeader = 15;
+                break;
+            case "Medium":
+                fontSizeSmall = 15;
+                fontSizeHeader = 18;
+                break;
+            case "Large":
+                fontSizeSmall = 18;
+                fontSizeHeader = 21;
+                break;
+        }
+        TextView header = findViewById(R.id.homePageHeader);
+        TextView smaller = findViewById(R.id.homePageSecondaryMsg);
+
+
+        header.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSizeHeader);
+        smaller.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSizeSmall);
+
     }
 }

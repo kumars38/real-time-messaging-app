@@ -22,6 +22,8 @@ import com.example.messagingapp.R;
 import com.example.messagingapp.models.User;
 import com.example.messagingapp.singleton.MainUser;
 
+import org.w3c.dom.Text;
+
 public class AccountActivity extends AppCompatActivity {
     private EditText prefNameET, fontSizeET;
     private Spinner colorSpinner;
@@ -33,8 +35,7 @@ public class AccountActivity extends AppCompatActivity {
         user = MainUser.getInstance().getUserData();
         this.updateTheme();
         setContentView(R.layout.activity_account);
-        startEventColorSpinnerListener();
-        startEventTextSpinnerListener();
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -43,7 +44,8 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         this.updateFontSize();
-
+        startEventColorSpinnerListener();
+        startEventTextSizeSpinnerListener();
     }
     private void startEventColorSpinnerListener() {
         Spinner spinner = findViewById(R.id.sysColorSpinner);
@@ -72,11 +74,11 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
     }
-    private void startEventTextSpinnerListener() {
-        Spinner spinner = findViewById(R.id.sysColorSpinner);
+    private void startEventTextSizeSpinnerListener() {
+        Spinner spinner = findViewById(R.id.fontSizeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
-                R.array.colorsArray,
+                R.array.fontSizeArray,
                 R.layout.spinner_list
         );
         adapter.setDropDownViewResource(R.layout.spinner_list);
@@ -123,7 +125,8 @@ public class AccountActivity extends AppCompatActivity {
         EditText prefNameR = findViewById(R.id.prefNameResult);
         TextView fSize = findViewById(R.id.fontSize);
         TextView sysColor = findViewById(R.id.sysColor);
-        
+        //TextView spinnerItem = findViewById(R.id.spinnerItems);
+
         workRole.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         workRoleR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
@@ -132,6 +135,7 @@ public class AccountActivity extends AppCompatActivity {
         prefNameR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         fSize.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         sysColor.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        //spinnerItem.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
     }
     public void editPressed(View view) {
     }
