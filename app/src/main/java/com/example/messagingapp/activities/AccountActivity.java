@@ -19,31 +19,17 @@ import android.widget.EditText;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.messagingapp.R;
 import com.example.messagingapp.models.User;
 import com.example.messagingapp.singleton.MainUser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
-import java.util.List;
-import java.util.Map;
 
 public class AccountActivity extends AppCompatActivity {
-    private EditText prefNameET, fontSizeET;
-    private Spinner colorSpinner;
     User user;
     private String selectedColor;
     private String selectedFontSize;
@@ -79,36 +65,25 @@ public class AccountActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference userProfileCollection = db.collection("userProfile");
         Query query = userProfileCollection.whereEqualTo("email", user.getEmail());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        // Handle the document here
-                        Log.d("DB", document.getId() + " => " + document.getData());
-                        DocumentReference docRef = userProfileCollection.document(document.getId());
-                        user.getProfilePreferences().setFontSize(selectedFontSize);
-                        user.getProfilePreferences().setSystemTheme(selectedColor);
-                        user.getPreferredName().setFirst(firstLast[0]);
-                        user.getPreferredName().setLast(firstLast[1]);
-                        docRef.update("preferredName.first", firstLast[0], "preferredName.last", firstLast[1], "profilePreferences.fontSize", selectedFontSize, "profilePreferences.systemTheme", selectedColor)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("DB Update", "DocumentSnapshot successfully updated!");
-                                        recreate();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w("DB Update", "Error updating document", e);
-                                    }
-                                });
-                    }
-                } else {
-                    Log.d("DB", "Error getting documents: ", task.getException());
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Handle the document here
+                    Log.d("DB", document.getId() + " => " + document.getData());
+                    DocumentReference docRef = userProfileCollection.document(document.getId());
+                    user.getProfilePreferences().setFontSize(selectedFontSize);
+                    user.getProfilePreferences().setSystemTheme(selectedColor);
+                    user.getPreferredName().setFirst(firstLast[0]);
+                    user.getPreferredName().setLast(firstLast[1]);
+                    docRef.update("preferredName.first", firstLast[0], "preferredName.last", firstLast[1], "profilePreferences.fontSize", selectedFontSize, "profilePreferences.systemTheme", selectedColor)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("DB Update", "DocumentSnapshot successfully updated!");
+                                recreate();
+                            })
+                            .addOnFailureListener(e -> Log.w("DB Update", "Error updating document", e));
                 }
+            } else {
+                Log.d("DB", "Error getting documents: ", task.getException());
             }
         });
     }
@@ -122,6 +97,12 @@ public class AccountActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_list);
         spinner.setAdapter(adapter);
 
+        String desiredTheme = user.getProfilePreferences().getSystemTheme(); // Change "YourDesiredValue" to the value you want to find the index for
+        // Find the index of the desired value
+        int index = getIndex(adapter, desiredTheme);
+        if (index != -1) {
+            spinner.setSelection(index); // Set the selection to the index if found
+        }
         // Set an item selected listener to perform actions when an item is selected
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -139,6 +120,8 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void startEventTextSizeSpinnerListener() {
         Spinner spinner = findViewById(R.id.fontSizeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -149,6 +132,12 @@ public class AccountActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.spinner_list);
         spinner.setAdapter(adapter);
 
+        String desiredSize = user.getProfilePreferences().getFontSize();
+        // Find the index of the desired value
+        int index = getIndex(adapter, desiredSize);
+        if (index != -1) {
+            spinner.setSelection(index); // Set the selection to the index if found
+        }
         // Set an item selected listener to perform actions when an item is selected
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -213,5 +202,14 @@ public class AccountActivity extends AppCompatActivity {
         accName.setText(firstLastAcc);
 
     }
-
+    private static int getIndex(ArrayAdapter<CharSequence> adapter, String desiredItem) {
+        int index = -1; // Initialize the index to -1
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (adapter.getItem(i).toString().equals(desiredItem)) {
+                index = i; // Found the index
+                break;
+            }
+        }
+        return index;
+    }
 }
