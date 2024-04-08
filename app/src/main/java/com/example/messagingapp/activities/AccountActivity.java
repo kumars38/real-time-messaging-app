@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.messagingapp.R;
 import com.example.messagingapp.models.User;
 import com.example.messagingapp.singleton.MainUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
@@ -46,6 +47,11 @@ public class AccountActivity extends AppCompatActivity {
         this.updateFontSize();
         startEventColorSpinnerListener();
         startEventTextSizeSpinnerListener();
+    }
+    private void updateButtonPress(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //DocumentReference docRef = db.collection("userProfile").document();
+
     }
     private void startEventColorSpinnerListener() {
         Spinner spinner = findViewById(R.id.sysColorSpinner);
@@ -125,7 +131,6 @@ public class AccountActivity extends AppCompatActivity {
         EditText prefNameR = findViewById(R.id.prefNameResult);
         TextView fSize = findViewById(R.id.fontSize);
         TextView sysColor = findViewById(R.id.sysColor);
-        //TextView spinnerItem = findViewById(R.id.spinnerItems);
 
         workRole.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         workRoleR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
@@ -135,10 +140,8 @@ public class AccountActivity extends AppCompatActivity {
         prefNameR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         fSize.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         sysColor.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
-        //spinnerItem.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
     }
-    public void editPressed(View view) {
-    }
+
 
 
 }
