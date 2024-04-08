@@ -3,9 +3,11 @@ package com.example.messagingapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class ChooseRecipientActivity extends AppCompatActivity {
         layoutList = findViewById(R.id.recipientsLayout);
 
         this.getRecipientsFromDB();
+
     }
 
     private void getRecipientsFromDB() {
@@ -72,6 +75,7 @@ public class ChooseRecipientActivity extends AppCompatActivity {
             Log.d("DEBUG_CHOOSE_RECIP",recipLast);
             View v = getLayoutInflater().inflate(R.layout.recipient,null,false);
             Button b = v.findViewById(R.id.recipientButton);
+            this.updateFontSize(b);
             b.setText(recipFirst+" "+recipLast);
             layoutList.addView(v);
         }
@@ -111,5 +115,15 @@ public class ChooseRecipientActivity extends AppCompatActivity {
             case "Green": setTheme(R.style.GreenTheme); break;
             default: setTheme(R.style.BlueTheme);
         }
+    }
+    private void updateFontSize(Button b){
+        float fontSize = 15;
+        switch(user.getProfilePreferences().getFontSize()){
+            case "Small": fontSize = 12; break;
+            case "Medium": fontSize = 15; break;
+            case "Large": fontSize= 18; break;
+        }
+        b.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+
     }
 }

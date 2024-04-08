@@ -2,9 +2,12 @@ package com.example.messagingapp.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,39 +18,98 @@ import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
+import android.widget.TextView;
+
 import com.example.messagingapp.R;
 import com.example.messagingapp.models.User;
 import com.example.messagingapp.singleton.MainUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.Map;
 
 public class AccountActivity extends AppCompatActivity {
     private EditText prefNameET, fontSizeET;
     private Spinner colorSpinner;
     User user;
+    private String selectedColor;
+    private String selectedFontSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         user = MainUser.getInstance().getUserData();
-        updateTheme();
+        selectedColor = user.getProfilePreferences().getSystemTheme();
+        selectedFontSize = user.getProfilePreferences().getFontSize();
+
+        this.updateTheme();
 
         setContentView(R.layout.activity_account);
-        startEventColorSpinnerListener();
+        this.updateFontSize();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        /*
-        TODO - Fix LOLOLOLOL
-        prefNameET = findViewById(R.id.prefNameResult);
-        fontSizeET = findViewById(R.id.fontSizeResult);
 
+        startEventColorSpinnerListener();
+        startEventTextSizeSpinnerListener();
 
+    }
+    public void updateButtonPress(View v){
+        EditText fullName = findViewById(R.id.prefNameResult);
+        String fullNameStr = fullName.getText().toString();
+        String[] firstLast = fullNameStr.split(" ");
 
-        Button updateProfileBtn = findViewById(R.id.updateProfileBtn);
-        updateProfileBtn.setOnClickListener(this::updateProfileBtnClicked);
-        */
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference userProfileCollection = db.collection("userProfile");
+        Query query = userProfileCollection.whereEqualTo("email", user.getEmail());
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Handle the document here
+                        Log.d("DB", document.getId() + " => " + document.getData());
+                        DocumentReference docRef = userProfileCollection.document(document.getId());
+                        user.getProfilePreferences().setFontSize(selectedFontSize);
+                        user.getProfilePreferences().setSystemTheme(selectedColor);
+                        user.getEmployeeName().setFirst(firstLast[0]);
+                        user.getEmployeeName().setLast(firstLast[1]);
+                        docRef.update("preferredName.first", firstLast[0], "preferredName.last", firstLast[1], "profilePreferences.fontSize", selectedFontSize, "profilePreferences.systemTheme", selectedColor)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("DB Update", "DocumentSnapshot successfully updated!");
+                                        recreate();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("DB Update", "Error updating document", e);
+                                    }
+                                });
+                    }
+                } else {
+                    Log.d("DB", "Error getting documents: ", task.getException());
+                }
+            }
+        });
     }
     private void startEventColorSpinnerListener() {
         Spinner spinner = findViewById(R.id.sysColorSpinner);
@@ -64,7 +126,34 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // Retrieve the selected item from the spinner
-                String selectedColor = parent.getItemAtPosition(position).toString();
+                selectedColor = parent.getItemAtPosition(position).toString();
+
+                // Display a toast with the selected color
+                //Toast.makeText(AccountActivity.this, "Selected color: " + selectedColor, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing when nothing is selected
+            }
+        });
+    }
+    private void startEventTextSizeSpinnerListener() {
+        Spinner spinner = findViewById(R.id.fontSizeSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.fontSizeArray,
+                R.layout.spinner_list
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_list);
+        spinner.setAdapter(adapter);
+
+        // Set an item selected listener to perform actions when an item is selected
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Retrieve the selected item from the spinner
+                selectedFontSize = parent.getItemAtPosition(position).toString();
 
                 // Display a toast with the selected color
                 //Toast.makeText(AccountActivity.this, "Selected color: " + selectedColor, Toast.LENGTH_SHORT).show();
@@ -84,7 +173,31 @@ public class AccountActivity extends AppCompatActivity {
             default: setTheme(R.style.BlueTheme);
         }
     }
-    public void editPressed(View view) {
+    private void updateFontSize(){
+        float fontSize = 15;
+        switch(user.getProfilePreferences().getFontSize()){
+            case "Small": fontSize = 12; break;
+            case "Medium": fontSize = 15; break;
+            case "Large": fontSize= 18; break;
+        }
+
+        TextView workRole = findViewById(R.id.workRole);
+        TextView workRoleR = findViewById(R.id.workRoleResult);
+        TextView phoneNumber = findViewById(R.id.phoneNumber);
+        TextView phoneNumberR = findViewById(R.id.phoneNumberResult);
+        TextView prefName = findViewById(R.id.prefName);
+        EditText prefNameR = findViewById(R.id.prefNameResult);
+        TextView fSize = findViewById(R.id.fontSize);
+        TextView sysColor = findViewById(R.id.sysColor);
+
+        workRole.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        workRoleR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        phoneNumber.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        phoneNumberR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        prefName.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        prefNameR.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        fSize.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
+        sysColor.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
     }
 
 
