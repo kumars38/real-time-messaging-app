@@ -23,7 +23,7 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = MainUser.getInstance().getUserData();
-
+        this.updateTheme();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -33,6 +33,16 @@ public class HomePageActivity extends AppCompatActivity {
         });
 
         this.updateHeader();
+
+    }
+
+    private void updateTheme() {
+        switch (user.getProfilePreferences().getSystemTheme()){
+            case "Blue": setTheme(R.style.BlueTheme); break;
+            case "Red": setTheme(R.style.RedTheme); break;
+            case "Green": setTheme(R.style.GreenTheme); break;
+            default: setTheme(R.style.BlueTheme);
+        }
     }
 
     private void updateHeader() {

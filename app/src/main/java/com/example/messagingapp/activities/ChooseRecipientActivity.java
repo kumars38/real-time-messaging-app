@@ -32,7 +32,7 @@ public class ChooseRecipientActivity extends AppCompatActivity {
         user = MainUser.getInstance().getUserData();
 
         EdgeToEdge.enable(this);
-
+        updateTheme();
         setContentView(R.layout.activity_choose_recipient);
 
         layoutList = findViewById(R.id.recipientsLayout);
@@ -101,6 +101,15 @@ public class ChooseRecipientActivity extends AppCompatActivity {
         else {
             // proceed to messaging the chosen recipient
             startActivity(i);
+        }
+    }
+
+    private void updateTheme() {
+        switch (user.getProfilePreferences().getSystemTheme()){
+            case "Blue": setTheme(R.style.BlueTheme); break;
+            case "Red": setTheme(R.style.RedTheme); break;
+            case "Green": setTheme(R.style.GreenTheme); break;
+            default: setTheme(R.style.BlueTheme);
         }
     }
 }

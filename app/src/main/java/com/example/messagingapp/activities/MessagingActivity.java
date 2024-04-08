@@ -59,6 +59,7 @@ public class MessagingActivity extends AppCompatActivity {
         Log.d("DEBUG_MESSAGING","Recipient Display Name: "+recipientName);
 
         setTitle("Messaging "+recipientName);
+        updateTheme();
         setContentView(R.layout.activity_messaging);
 
         messageLayoutList = findViewById(R.id.messageLayout);
@@ -102,6 +103,14 @@ public class MessagingActivity extends AppCompatActivity {
         }
         Log.d("DEBUG_MESSAGING","Generated Pair ID: "+pairID);
         return pairID;
+    }
+    private void updateTheme() {
+        switch (user.getProfilePreferences().getSystemTheme()){
+            case "Blue": setTheme(R.style.BlueTheme); break;
+            case "Red": setTheme(R.style.RedTheme); break;
+            case "Green": setTheme(R.style.GreenTheme); break;
+            default: setTheme(R.style.BlueTheme);
+        }
     }
 
     // OLD
