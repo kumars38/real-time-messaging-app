@@ -16,6 +16,8 @@ public class AuthenticationServer extends Thread {
     private KDC kdc;
     public static final int[] ports = {1234, 4567, 8888, 9999, 9876};
 
+    public boolean serverStart = false;
+
     public AuthenticationServer( KDC kdc){
 
         //will use different port later
@@ -66,6 +68,7 @@ public class AuthenticationServer extends Thread {
     }
     @Override
     public void run() {
+        this.serverStart = true;
 // due to the time constraint, not going to implement recycling of the ports, too much work on threads
         for (int port : ports) {
             try {
