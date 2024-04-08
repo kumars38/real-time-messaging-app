@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.messagingapp.R;
 import com.example.messagingapp.models.User;
@@ -59,7 +60,7 @@ public class AccountActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_account);
         this.updateFontSize();
-
+        this.updateText();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -88,8 +89,8 @@ public class AccountActivity extends AppCompatActivity {
                         DocumentReference docRef = userProfileCollection.document(document.getId());
                         user.getProfilePreferences().setFontSize(selectedFontSize);
                         user.getProfilePreferences().setSystemTheme(selectedColor);
-                        user.getEmployeeName().setFirst(firstLast[0]);
-                        user.getEmployeeName().setLast(firstLast[1]);
+                        user.getPreferredName().setFirst(firstLast[0]);
+                        user.getPreferredName().setLast(firstLast[1]);
                         docRef.update("preferredName.first", firstLast[0], "preferredName.last", firstLast[1], "profilePreferences.fontSize", selectedFontSize, "profilePreferences.systemTheme", selectedColor)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -199,6 +200,18 @@ public class AccountActivity extends AppCompatActivity {
         fSize.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
         sysColor.setTextSize(TypedValue.COMPLEX_UNIT_SP,fontSize);
     }
+    private void updateText(){
+        TextView prefName = findViewById(R.id.textView4);
+        TextView accName = findViewById(R.id.textView);
+        EditText prefNameEditable = findViewById(R.id.prefNameResult);
 
+        String firstLastPref = user.getPreferredName().getFirst()+" "+user.getPreferredName().getLast();
+        prefName.setText(firstLastPref);
+        prefNameEditable.setText(firstLastPref);
+
+        String firstLastAcc = user.getEmployeeName().getFirst()+" "+user.getEmployeeName().getLast();
+        accName.setText(firstLastAcc);
+
+    }
 
 }
