@@ -15,9 +15,16 @@ import com.example.messagingapp.R;
 import com.example.messagingapp.models.User;
 import com.example.messagingapp.singleton.MainUser;
 
+import javax.crypto.SecretKey;
+
+import security.manager.CryptoMethods;
+import security.manager.KDC;
+
 public class HomePageActivity extends AppCompatActivity {
 
     private User user;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,16 @@ public class HomePageActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+        String userId = MainUser.getUserData().getWorkNumber();
+        SecretKey key = CryptoMethods.generateKey();
+        SecretKey key2 = CryptoMethods.generateKey();
+        String str_key = CryptoMethods.SKeyToString(key);
+        String str_key2 = CryptoMethods.SKeyToString(key2);
+        KDC kdc = new KDC();
+        kdc.updateUserPrivateKey(userId, str_key);
+        kdc.updateMessagingSession(userId, str_key2);
 
         this.updateHeader();
 

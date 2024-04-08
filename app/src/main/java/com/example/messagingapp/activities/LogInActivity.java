@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.PrintWriter;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.crypto.SecretKey;
@@ -33,6 +34,8 @@ public class LogInActivity extends AppCompatActivity {
     private ActivityLogInBinding binding;
     private static final KDC kdc = new KDC();
     private String userId;
+
+    private MainUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,24 +59,6 @@ public class LogInActivity extends AppCompatActivity {
 
     public void user_signIn(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        SecretKey key = CryptoMethods.generateKey();
-        SecretKey key2 = CryptoMethods.generateKey();
-        String str_key = CryptoMethods.SKeyToString(key);
-        String str_key2 = CryptoMethods.SKeyToString(key2);
-        this.userId = getUserId(binding.EmailInput.getText().toString());
-
-        try{
-        PrintWriter cacheStore = new PrintWriter("cache");
-        cacheStore.println(this.userId);
-        cacheStore.close();
-        }
-        catch (Exception ex){
-            Log.e("Login", "Cache failed to store, Please reset PC authentication");
-        }
-
-        //store userId in a local file
-        kdc.updateUserPrivateKey(this.userId, str_key);
-        kdc.updateMessagingSession(this.userId, str_key2);
 
         db.collection(Firebase_CollectionFields.ATTR_COLLECTION_USER_PROFILE)
                 .whereEqualTo(Firebase_CollectionFields.ATTR_EMAIL, binding.EmailInput.getText().toString())
@@ -82,13 +67,12 @@ public class LogInActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful() && task.getResult() != null && !task.getResult().getDocuments().isEmpty()) {
                         DocumentSnapshot docSnap = task.getResult().getDocuments().get(0);
-                        String clientID = docSnap.getId();
-                        Log.d("Logged in ID:",clientID);
 
                         // save query result as user object
                         User user = docSnap.toObject(User.class);
                         Intent home_page = new Intent(this, HomePageActivity.class);
                         displayHelpText("Company Login Successful");
+                        String clientID = docSnap.getId();
 
                         MainUser.getInstance().setUserData(user);
                         startActivity(home_page);
@@ -98,6 +82,7 @@ public class LogInActivity extends AppCompatActivity {
                     }
 
                 });
+
     }
 
     private void displayHelpText(String txt){
