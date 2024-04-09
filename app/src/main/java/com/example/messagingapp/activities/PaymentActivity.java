@@ -28,10 +28,28 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
+import javax.crypto.SecretKey;
+
+import security.manager.AppClient;
+import security.manager.AuthenticationServer;
+import security.manager.CryptoMethods;
+import security.manager.KDC;
+
+
 public class PaymentActivity extends AppCompatActivity {
-    ArrayList<String> dummyDatabase = new ArrayList<>();
+    //ArrayList<String> dummyDatabase = new ArrayList<>();
     // Dummy db  to log transactions --> pretty sure we were gonna centralize this guy tho??
     //where is the real db??? how we gonna format her???
+    private FirebaseFirestore firestore;
 
     private EditText amountField;
     private EditText recipientNameField;
@@ -42,6 +60,7 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = MainUser.getInstance().getUserData();
+        firestore=FirebaseFirestore.getInstance();
         //EdgeToEdge.enable(this);
         updateTheme();
         setContentView(R.layout.activity_payment);
@@ -87,6 +106,8 @@ public class PaymentActivity extends AppCompatActivity {
         EditText amountField;
         amountField = findViewById(R.id.amountField);
         double amount = Double.parseDouble(amountField.getText().toString());
+        String recipientName = recipientNameField.getText().toString();
+        String paymentMessage = paymentMessageField.getText().toString();
         if (amount <= 0) {
             // idk if there are other things we gotta check
             Toast.makeText(this, "Amount must be greater than 0", Toast.LENGTH_SHORT).show();
@@ -106,6 +127,20 @@ public class PaymentActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Map<String, Object> transaction = new HashMap<>();
+        transaction.put("user", user.getEmployeeName());
+        transaction.put("recipientName", recipientName);
+        transaction.put("amount", amount);
+        transaction.put("paymentMessage", paymentMessage);
+        transaction.put("paymentStatus", paymentStatus);
+
+        String transactionId = UUID.randomUUID().toString();
+
+        firestore.collection("paymentLog").document(transactionId)
+                .set(transaction)
+                .addOnSuccessListener(aVoid -> Log.d("PaymentActivity", "Transaction logged to Firestore"))
+                .addOnFailureListener(e -> Log.e("PaymentActivity", "Error logging transaction to Firestore", e));
 
 
 
