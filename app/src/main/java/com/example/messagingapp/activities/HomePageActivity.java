@@ -1,6 +1,7 @@
 package com.example.messagingapp.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,9 +10,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.messagingapp.R;
@@ -36,6 +39,7 @@ public class HomePageActivity extends AppCompatActivity {
         this.updateTheme();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
+        this.updateButtons();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -65,34 +69,42 @@ public class HomePageActivity extends AppCompatActivity {
         }
     }
 
+    private void updateButtons() {
+        int[] homePageButtons = {R.id.navHomeBtn, R.id.navChatBtn, R.id.navAccountBtn, R.id.navPaymentBtn};
+        int[] buttonBgColors = {R.color.navBlueTint, R.color.navRedTint, R.color.navGreenTint};
+        int i;
+        switch (user.getProfilePreferences().getSystemTheme()){
+            case "Red": i=1; break;
+            case "Green": i=2; break;
+            default: i=0; break;
+        }
+        Log.d("DEBUG_HP", String.valueOf(i));
+        for (int h : homePageButtons) {
+            findViewById(h).setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(buttonBgColors[i])));
+        }
+    }
+
     private void updateHeader() {
         TextView v = findViewById(R.id.homePageHeader);
         v.setText("Hello, "+user.getPreferredName().getFirst()+" "+user.getPreferredName().getLast());
     }
 
-    // navigation stuff, can move to a common component later
     public void navHomePressed(View v) {
         // ...
     }
 
     public void navChatPressed(View v) {
         Intent i = new Intent(this, ChooseRecipientActivity.class);
-        i.putExtra("user",user);
-
-        // can pass in the user's details here
-        // i.putExtra(..., ...)
         startActivity(i);
     }
 
     public void navPaymentPressed(View v) {
         Intent i = new Intent(this, PaymentActivity.class);
-        i.putExtra("user",user);
         startActivity(i);
     }
 
     public void navAccountPressed(View v) {
         Intent i = new Intent(this, AccountActivity.class);
-        i.putExtra("user",user);
         startActivity(i);
     }
     private void updateFontSize(){
