@@ -29,6 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import org.w3c.dom.Text;
+
 public class AccountActivity extends AppCompatActivity {
     User user;
     private String selectedColor;
@@ -192,6 +194,8 @@ public class AccountActivity extends AppCompatActivity {
     private void updateText(){
         TextView prefName = findViewById(R.id.textView4);
         TextView accName = findViewById(R.id.textView);
+        TextView email = findViewById(R.id.textView3);
+        TextView phoneNumber = findViewById(R.id.phoneNumberResult);
         EditText prefNameEditable = findViewById(R.id.prefNameResult);
 
         String firstLastPref = user.getPreferredName().getFirst()+" "+user.getPreferredName().getLast();
@@ -200,6 +204,10 @@ public class AccountActivity extends AppCompatActivity {
 
         String firstLastAcc = user.getEmployeeName().getFirst()+" "+user.getEmployeeName().getLast();
         accName.setText(firstLastAcc);
+
+        email.setText(user.getEmail());
+        phoneNumber.setText(user.getWorkNumber());
+
 
     }
     private static int getIndex(ArrayAdapter<CharSequence> adapter, String desiredItem) {
