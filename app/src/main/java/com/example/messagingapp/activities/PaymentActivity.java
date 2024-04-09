@@ -77,20 +77,16 @@ public class PaymentActivity extends AppCompatActivity {
 
         Button sendPaymentButton = findViewById(R.id.sendPayment);
         sendPaymentButton.setOnClickListener(v -> {
-            double amount;
-            amount = Double.parseDouble(amountField.getText().toString());
-            String recipientName = recipientNameField.getText().toString();
-            String paymentMessage = paymentMessageField.getText().toString();
-            paymentAPI.sendPayment(recipientName, amount);
+            sendPayment();
         });
 
         // update header like in regular messaging app
 
 
         // start listener to track the amount added
-        startAmountEnteredListener();
+        // startAmountEnteredListener();
         startRecipientNameEnteredListener();
-        startPaymentMessageEnteredListener();
+        // startPaymentMessageEnteredListener();
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("recipientName")) {
             String recipientName = intent.getStringExtra("recipientName");
@@ -102,10 +98,18 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    public void sendPayment(View v) {
+    public void sendPayment() {
         EditText amountField;
         amountField = findViewById(R.id.amountField);
-        double amount = Double.parseDouble(amountField.getText().toString());
+
+        String amt = amountField.getText().toString();
+        double amount;
+        if (amt.equals("")) {
+            amount = 0;
+        }
+        else {
+            amount = Double.parseDouble(amountField.getText().toString());
+        }
         String recipientName = recipientNameField.getText().toString();
         String paymentMessage = paymentMessageField.getText().toString();
         if (amount <= 0) {
@@ -158,7 +162,7 @@ public class PaymentActivity extends AppCompatActivity {
         headerTextView.setText(recipientName);
     }
 
-    private void startAmountEnteredListener() {
+    /*private void startAmountEnteredListener() {
         EditText amountField = findViewById(R.id.amountField);
         Button sendPaymentButton = findViewById(R.id.sendPayment);
         amountField.addTextChangedListener(new TextWatcher() {
@@ -177,7 +181,7 @@ public class PaymentActivity extends AppCompatActivity {
                 // implementation after text has changed
             }
         });
-    }
+    }*/
 
     private void startRecipientNameEnteredListener() {
         recipientNameField.addTextChangedListener(new TextWatcher() {
@@ -198,7 +202,7 @@ public class PaymentActivity extends AppCompatActivity {
         });
     }
 
-    private void startPaymentMessageEnteredListener() {
+    /*private void startPaymentMessageEnteredListener() {
         paymentMessageField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -215,7 +219,7 @@ public class PaymentActivity extends AppCompatActivity {
                 // Not needed for this example
             }
         });
-    }
+    }*/
 
 
     private void showAlert(String message) {
