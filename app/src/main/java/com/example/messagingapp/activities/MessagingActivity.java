@@ -230,7 +230,7 @@ public class MessagingActivity extends AppCompatActivity {
                         for (DocumentSnapshot docSnap : value) {
                             Message message = docSnap.toObject(Message.class);
                             messageList.add(message);
-                            Log.d("DEBUG_MESSAGING2","Added to local msg list: "+message.getMessage());
+
                         }
                     }
                     // messages have been retrieved from DB, now display

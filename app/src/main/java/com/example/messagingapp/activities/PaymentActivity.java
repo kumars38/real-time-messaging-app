@@ -117,6 +117,11 @@ public class PaymentActivity extends AppCompatActivity {
             Toast.makeText(this, "Amount must be greater than 0", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (recipientName.isEmpty()) {
+            Toast.makeText(this, "Must have a valid recipient name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         // call da api
         //boolean paymentStatus = PaymentAPI.sendPayment("recipientName", amount);
